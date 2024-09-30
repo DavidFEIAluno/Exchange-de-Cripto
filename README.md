@@ -1,2 +1,2 @@
-# Exchange-de-Cripto
-Projeto 1: O projeto consiste na criação da sua propria Exchange de Criptomoedas, uma plataforma onde é possível comprar e vender criptomoedas​.
+Como funciona o Cadastro: Bascicamente, escreva seu CPF + Senha, o CPF precisa ser obrigatoriamente no modelo xxx.xxx.xxx-xx, tendo que conter os . e o -
+Ja na senha, faça uma senha de no minimo 6 caracteres.
