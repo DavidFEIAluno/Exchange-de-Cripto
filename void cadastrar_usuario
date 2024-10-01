@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_USUARIOS 10
+
+void cadastrar_usuario(Usuario usuarios[], int *num_usuarios) {
+    if (*num_usuarios >= MAX_USUARIOS) {
+        printf("Limite de usuários alcançado.\n");
+        return;
+    }
+
+    Usuario novo_usuario;
+
+    // Codigo para o NOme
+    printf("Digite o nome do usuário: ");
+    scanf(" %[^\n]", novo_usuario.nome);
+
+    // Aqui valida o CPF, obrigatorio ser no modelo XXX.XXX.XXX-XX, Deve se colocar os . e o -
+    do {
+        printf("Digite o CPF (formato xxx.xxx.xxx-xx): ");
+        scanf("%s", novo_usuario.cpf);
+        if (!validar_cpf(novo_usuario.cpf)) {
+            printf("CPF inválido. Tente novamente.\n");
+        }
+    } while (!validar_cpf(novo_usuario.cpf));
+
+    // Validação de senha
+    do {
+        printf("Digite a senha (mínimo 6 caracteres): ");
+        scanf("%s", novo_usuario.senha);
+        if (!validar_senha(novo_usuario.senha)) {
+            printf("Senha inválida. Tente novamente.\n");
+        }
+    } while (!validar_senha(novo_usuario.senha));
+
+    novo_usuario.saldo_reais = 0.0;
+    novo_usuario.saldo_bitcoin = 0.0;
+    novo_usuario.saldo_ethereum = 0.0;
+    novo_usuario.saldo_ripple = 0.0;
+
+    usuarios[*num_usuarios] = novo_usuario;
+    (*num_usuarios)++;
+    printf("Usuário cadastrado com sucesso.\n");
+}
