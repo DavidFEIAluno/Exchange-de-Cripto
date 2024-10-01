@@ -48,6 +48,7 @@ int validar_senha(const char *senha) {
     return strlen(senha) >= 6;
 }
 
+// Void parra o cadastro de usuario
 void cadastrar_usuario(Usuario usuarios[], int *num_usuarios) {
     if (*num_usuarios >= MAX_USUARIOS) {
         printf("Limite de usuários alcançado.\n");
@@ -56,11 +57,11 @@ void cadastrar_usuario(Usuario usuarios[], int *num_usuarios) {
 
     Usuario novo_usuario;
 
-    // Solicita o nome
+    // Codigo para o NOme
     printf("Digite o nome do usuário: ");
     scanf(" %[^\n]", novo_usuario.nome);
 
-    // Validação de CPF
+    // Aqui valida o CPF, obrigatorio ser no modelo XXX.XXX.XXX-XX, Deve se colocar os . e o -
     do {
         printf("Digite o CPF (formato xxx.xxx.xxx-xx): ");
         scanf("%s", novo_usuario.cpf);
@@ -133,7 +134,7 @@ int carregar_usuarios(Usuario usuarios[]) {
     return num_usuarios;
 }
 
-// Funções do sistema
+//Consulta o saldo do usuario, tanto dos Reais e das criptomoedas compradas
 void consultar_saldo(Usuario *usuario_atual) {
     printf("\nSaldo Atual:\n");
     printf("Reais: R$ %.2f\n", usuario_atual->saldo_reais);
@@ -142,27 +143,30 @@ void consultar_saldo(Usuario *usuario_atual) {
     printf("Ripple: %.6f XRP\n", usuario_atual->saldo_ripple);
 }
 
+// Deposita a quantia de Reais de sua escolha
 void depositar_reais(Usuario *usuario_atual) {
     float valor;
     printf("Digite o valor para depositar em reais: ");
     scanf("%f", &valor);
     usuario_atual->saldo_reais += valor;
-    printf("Depósito realizado com sucesso. Saldo atual: R$ %.2f\n", usuario_atual->saldo_reais);
+    printf("Depósito realizado com sucesso! Saldo atual: R$ %.2f\n", usuario_atual->saldo_reais);
 }
 
+// Saca a quantia de Reais a sua escolha, Caso pegue mais do que foi depositado, dara resultado de Saldo insuficiente.
 void sacar_reais(Usuario *usuario_atual) {
     float valor;
     printf("Digite o valor para sacar em reais: ");
     scanf("%f", &valor);
 
     if (valor > usuario_atual->saldo_reais) {
-        printf("Saldo insuficiente.\n");
+        printf("Saldo insuficiente!\n");
     } else {
         usuario_atual->saldo_reais -= valor;
-        printf("Saque realizado com sucesso. Saldo atual: R$ %.2f\n", usuario_atual->saldo_reais);
+        printf("Saque realizado com sucesso! Saldo atual: R$ %.2f\n", usuario_atual->saldo_reais);
     }
 }
 
+//Atualiza a cotação entre -5% a +5%, conforme o requisitado.
 void atualizar_cotacao(float *cotacao_bitcoin, float *cotacao_ethereum, float *cotacao_ripple) {
     *cotacao_bitcoin += (*cotacao_bitcoin * (rand() % 11 - 5) / 100.0); // Varia entre -5% a +5%
     *cotacao_ethereum += (*cotacao_ethereum * (rand() % 11 - 5) / 100.0);
@@ -174,6 +178,7 @@ void atualizar_cotacao(float *cotacao_bitcoin, float *cotacao_ethereum, float *c
     printf("Ripple: R$ %.2f\n", *cotacao_ripple);
 }
 
+//Feito para comprar as criptomoedas, tendo um valor variado em cada, caso o usuario possua um saldo insuficiente, aparecera a mensagem, "Saldo insuficiente em reais". 
 void comprar_criptomoeda(Usuario *usuario_atual, float cotacao_bitcoin, float cotacao_ethereum, float cotacao_ripple) {
     int opcao;
     float valor, quantidade;
@@ -263,6 +268,7 @@ void vender_criptomoeda(Usuario *usuario_atual, float cotacao_bitcoin, float cot
     printf("Venda realizada com sucesso. Você recebeu R$ %.2f. Saldo em reais: R$ %.2f\n", valor, usuario_atual->saldo_reais);
 }
 
+//Void feito para o menu com as principais opcoes.
 void exibir_menu() {
     printf("\n----- Menu -----\n");
     printf("1. Consultar saldo\n");
@@ -276,6 +282,7 @@ void exibir_menu() {
     printf("----------------\n");
 }
 
+//Consulta o extrato de transferencias 
 void consultar_extrato(Carteira *carteira) {
     printf("\nExtrato de transações:\n");
     for (int i = 0; i < carteira->num_transacoes; i++) {
@@ -284,6 +291,8 @@ void consultar_extrato(Carteira *carteira) {
                t.tipo_operacao, t.criptomoeda, t.valor, t.taxa, ctime(&t.data));
     }
 }
+
+//Função onde carrega os usuarios e a cotação inicial de cada um, juntamente com um codigo onde gera numeros aleatorios.
 
 int main() {
     Usuario usuarios[MAX_USUARIOS];
@@ -321,7 +330,7 @@ int main() {
                         exibir_menu();
                         printf("Escolha uma opção: ");
                         scanf("%d", &opcao);
-
+                        // Os casos do menu principal, indo do 1 até o 8
                         switch (opcao) {
                             case 1:
                                 consultar_saldo(&usuario_atual);
