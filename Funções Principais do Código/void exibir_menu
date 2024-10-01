@@ -1,0 +1,12 @@
+void exibir_menu() {
+    printf("\n----- Menu -----\n");
+    printf("1. Consultar saldo\n");
+    printf("2. Consultar extrato\n");
+    printf("3. Depositar reais\n");
+    printf("4. Sacar reais\n");
+    printf("5. Comprar criptomoeda\n");
+    printf("6. Vender criptomoeda\n");
+    printf("7. Atualizar cotações\n");
+    printf("8. Sair\n");
+    printf("----------------\n");
+}

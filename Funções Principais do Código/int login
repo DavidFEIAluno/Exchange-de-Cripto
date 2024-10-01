@@ -1,0 +1,24 @@
+int login(Usuario usuarios[], int num_usuarios, Usuario *usuario_atual) {
+    char cpf[15];
+    char senha[11];
+
+    // Validação de CPF no login
+    do {
+        printf("Digite o CPF (formato xxx.xxx.xxx-xx): ");
+        scanf("%s", cpf);
+        if (!validar_cpf(cpf)) {
+            printf("CPF inválido. Tente novamente.\n");
+        }
+    } while (!validar_cpf(cpf));
+
+    printf("Digite a senha: ");
+    scanf("%s", senha);
+
+    for (int i = 0; i < num_usuarios; i++) {
+        if (strcmp(usuarios[i].cpf, cpf) == 0 && strcmp(usuarios[i].senha, senha) == 0) {
+            *usuario_atual = usuarios[i];
+            return 1;
+        }
+    }
+    return 0;
+}

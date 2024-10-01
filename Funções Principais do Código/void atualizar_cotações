@@ -1,0 +1,10 @@
+void atualizar_cotacao(float *cotacao_bitcoin, float *cotacao_ethereum, float *cotacao_ripple) {
+    *cotacao_bitcoin += (*cotacao_bitcoin * (rand() % 11 - 5) / 100.0); // Varia entre -5% a +5%
+    *cotacao_ethereum += (*cotacao_ethereum * (rand() % 11 - 5) / 100.0);
+    *cotacao_ripple += (*cotacao_ripple * (rand() % 11 - 5) / 100.0);
+
+    printf("\nCotações atualizadas:\n");
+    printf("Bitcoin: R$ %.2f\n", *cotacao_bitcoin);
+    printf("Ethereum: R$ %.2f\n", *cotacao_ethereum);
+    printf("Ripple: R$ %.2f\n", *cotacao_ripple);
+}

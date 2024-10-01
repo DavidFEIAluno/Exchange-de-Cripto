@@ -1,0 +1,12 @@
+void sacar_reais(Usuario *usuario_atual) {
+    float valor;
+    printf("Digite o valor para sacar em reais: ");
+    scanf("%f", &valor);
+
+    if (valor > usuario_atual->saldo_reais) {
+        printf("Saldo insuficiente!\n");
+    } else {
+        usuario_atual->saldo_reais -= valor;
+        printf("Saque realizado com sucesso! Saldo atual: R$ %.2f\n", usuario_atual->saldo_reais);
+    }
+}
