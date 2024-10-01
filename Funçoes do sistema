@@ -84,6 +84,53 @@ void comprar_criptomoeda(Usuario *usuario_atual, float cotacao_bitcoin, float co
     printf("Compra realizada com sucesso. Saldo em reais: R$ %.2f\n", usuario_atual->saldo_reais);
 }
 
+void vender_criptomoeda(Usuario *usuario_atual, float cotacao_bitcoin, float cotacao_ethereum, float cotacao_ripple) {
+    int opcao;
+    float quantidade, valor;
+
+    printf("Escolha a criptomoeda para vender:\n");
+    printf("1. Bitcoin (BTC)\n");
+    printf("2. Ethereum (ETH)\n");
+    printf("3. Ripple (XRP)\n");
+    printf("Opção: ");
+    scanf("%d", &opcao);
+
+    printf("Digite a quantidade que deseja vender: ");
+    scanf("%f", &quantidade);
+
+    switch (opcao) {
+        case 1:
+            if (quantidade > usuario_atual->saldo_bitcoin) {
+                printf("Saldo insuficiente em Bitcoin.\n");
+                return;
+            }
+            valor = quantidade * cotacao_bitcoin;
+            usuario_atual->saldo_bitcoin -= quantidade;
+            break;
+        case 2:
+            if (quantidade > usuario_atual->saldo_ethereum) {
+                printf("Saldo insuficiente em Ethereum.\n");
+                return;
+            }
+            valor = quantidade * cotacao_ethereum;
+            usuario_atual->saldo_ethereum -= quantidade;
+            break;
+        case 3:
+            if (quantidade > usuario_atual->saldo_ripple) {
+                printf("Saldo insuficiente em Ripple.\n");
+                return;
+            }
+            valor = quantidade * cotacao_ripple;
+            usuario_atual->saldo_ripple -= quantidade;
+            break;
+        default:
+            printf("Opção inválida.\n");
+            return;
+    }
+
+    usuario_atual->saldo_reais += valor;
+    printf("Venda realizada com sucesso. Você recebeu R$ %.2f. Saldo em reais: R$ %.2f\n", valor, usuario_atual->saldo_reais);
+}
 //Void feito para o menu com as principais opcoes.
 void exibir_menu() {
     printf("\n----- Menu -----\n");
