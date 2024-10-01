@@ -1,2 +1,2 @@
-# Exchange-de-Cripto
-Projeto 1: O projeto consiste na criação da sua propria Exchange de Criptomoedas, uma plataforma onde é possível comprar e vender criptomoedas​.
+# Funçoes do Sistema
+Nessa area, tera alguma funçoes do sistema, para que seje possivel tornanar as 8 opções principais possiveis.
