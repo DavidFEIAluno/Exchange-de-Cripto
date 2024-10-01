@@ -1,0 +1,366 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <ctype.h>
+
+#define MAX_USUARIOS 10
+#define MAX_TRANSACOES 100
+
+// Estruturas para usuário, transação e carteira
+typedef struct {
+    char nome[50];
+    char cpf[15];
+    char senha[11];
+    float saldo_reais;
+    float saldo_bitcoin;
+    float saldo_ethereum;
+    float saldo_ripple;
+} Usuario;
+
+typedef struct {
+    char tipo_operacao[10];
+    char criptomoeda[10];
+    float valor;
+    float taxa;
+    time_t data;
+} Transacao;
+
+typedef struct {
+    Usuario usuario;
+    Transacao transacoes[MAX_TRANSACOES];
+    int num_transacoes;
+} Carteira;
+
+// Funções auxiliares
+int validar_cpf(const char *cpf) {
+    if (strlen(cpf) != 14 || cpf[3] != '.' || cpf[7] != '.' || cpf[11] != '-') {
+        return 0; // CPF deve estar no formato "xxx.xxx.xxx-xx"
+    }
+    for (int i = 0; i < 14; i++) {
+        if (i == 3 || i == 7 || i == 11) continue; // Pula pontos e traços
+        if (!isdigit(cpf[i])) return 0; // Todos os outros caracteres devem ser dígitos
+    }
+    return 1;
+}
+
+int validar_senha(const char *senha) {
+    return strlen(senha) >= 6;
+}
+
+void cadastrar_usuario(Usuario usuarios[], int *num_usuarios) {
+    if (*num_usuarios >= MAX_USUARIOS) {
+        printf("Limite de usuários alcançado.\n");
+        return;
+    }
+
+    Usuario novo_usuario;
+
+    // Solicita o nome
+    printf("Digite o nome do usuário: ");
+    scanf(" %[^\n]", novo_usuario.nome);
+
+    // Validação de CPF
+    do {
+        printf("Digite o CPF (formato xxx.xxx.xxx-xx): ");
+        scanf("%s", novo_usuario.cpf);
+        if (!validar_cpf(novo_usuario.cpf)) {
+            printf("CPF inválido. Tente novamente.\n");
+        }
+    } while (!validar_cpf(novo_usuario.cpf));
+
+    // Validação de senha
+    do {
+        printf("Digite a senha (mínimo 6 caracteres): ");
+        scanf("%s", novo_usuario.senha);
+        if (!validar_senha(novo_usuario.senha)) {
+            printf("Senha inválida. Tente novamente.\n");
+        }
+    } while (!validar_senha(novo_usuario.senha));
+
+    novo_usuario.saldo_reais = 0.0;
+    novo_usuario.saldo_bitcoin = 0.0;
+    novo_usuario.saldo_ethereum = 0.0;
+    novo_usuario.saldo_ripple = 0.0;
+
+    usuarios[*num_usuarios] = novo_usuario;
+    (*num_usuarios)++;
+    printf("Usuário cadastrado com sucesso.\n");
+}
+
+int login(Usuario usuarios[], int num_usuarios, Usuario *usuario_atual) {
+    char cpf[15];
+    char senha[11];
+
+    // Validação de CPF no login
+    do {
+        printf("Digite o CPF (formato xxx.xxx.xxx-xx): ");
+        scanf("%s", cpf);
+        if (!validar_cpf(cpf)) {
+            printf("CPF inválido. Tente novamente.\n");
+        }
+    } while (!validar_cpf(cpf));
+
+    printf("Digite a senha: ");
+    scanf("%s", senha);
+
+    for (int i = 0; i < num_usuarios; i++) {
+        if (strcmp(usuarios[i].cpf, cpf) == 0 && strcmp(usuarios[i].senha, senha) == 0) {
+            *usuario_atual = usuarios[i];
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void salvar_usuarios(Usuario usuarios[], int num_usuarios) {
+    FILE *file = fopen("usuarios.bin", "wb");
+    if (!file) {
+        printf("Erro ao abrir o arquivo para salvar os usuários.\n");
+        return;
+    }
+    fwrite(usuarios, sizeof(Usuario), num_usuarios, file);
+    fclose(file);
+}
+
+int carregar_usuarios(Usuario usuarios[]) {
+    FILE *file = fopen("usuarios.bin", "rb");
+    if (!file) {
+        return 0;
+    }
+    int num_usuarios = fread(usuarios, sizeof(Usuario), MAX_USUARIOS, file);
+    fclose(file);
+    return num_usuarios;
+}
+
+// Funções do sistema
+void consultar_saldo(Usuario *usuario_atual) {
+    printf("\nSaldo Atual:\n");
+    printf("Reais: R$ %.2f\n", usuario_atual->saldo_reais);
+    printf("Bitcoin: %.6f BTC\n", usuario_atual->saldo_bitcoin);
+    printf("Ethereum: %.6f ETH\n", usuario_atual->saldo_ethereum);
+    printf("Ripple: %.6f XRP\n", usuario_atual->saldo_ripple);
+}
+
+void depositar_reais(Usuario *usuario_atual) {
+    float valor;
+    printf("Digite o valor para depositar em reais: ");
+    scanf("%f", &valor);
+    usuario_atual->saldo_reais += valor;
+    printf("Depósito realizado com sucesso. Saldo atual: R$ %.2f\n", usuario_atual->saldo_reais);
+}
+
+void sacar_reais(Usuario *usuario_atual) {
+    float valor;
+    printf("Digite o valor para sacar em reais: ");
+    scanf("%f", &valor);
+
+    if (valor > usuario_atual->saldo_reais) {
+        printf("Saldo insuficiente.\n");
+    } else {
+        usuario_atual->saldo_reais -= valor;
+        printf("Saque realizado com sucesso. Saldo atual: R$ %.2f\n", usuario_atual->saldo_reais);
+    }
+}
+
+void atualizar_cotacao(float *cotacao_bitcoin, float *cotacao_ethereum, float *cotacao_ripple) {
+    *cotacao_bitcoin += (*cotacao_bitcoin * (rand() % 11 - 5) / 100.0); // Varia entre -5% a +5%
+    *cotacao_ethereum += (*cotacao_ethereum * (rand() % 11 - 5) / 100.0);
+    *cotacao_ripple += (*cotacao_ripple * (rand() % 11 - 5) / 100.0);
+
+    printf("\nCotações atualizadas:\n");
+    printf("Bitcoin: R$ %.2f\n", *cotacao_bitcoin);
+    printf("Ethereum: R$ %.2f\n", *cotacao_ethereum);
+    printf("Ripple: R$ %.2f\n", *cotacao_ripple);
+}
+
+void comprar_criptomoeda(Usuario *usuario_atual, float cotacao_bitcoin, float cotacao_ethereum, float cotacao_ripple) {
+    int opcao;
+    float valor, quantidade;
+
+    printf("Escolha a criptomoeda para comprar:\n");
+    printf("1. Bitcoin (BTC)\n");
+    printf("2. Ethereum (ETH)\n");
+    printf("3. Ripple (XRP)\n");
+    printf("Opção: ");
+    scanf("%d", &opcao);
+
+    printf("Digite o valor em reais para investir: ");
+    scanf("%f", &valor);
+
+    if (valor > usuario_atual->saldo_reais) {
+        printf("Saldo insuficiente em reais.\n");
+        return;
+    }
+
+    switch (opcao) {
+        case 1:
+            quantidade = valor / cotacao_bitcoin;
+            usuario_atual->saldo_bitcoin += quantidade;
+            break;
+        case 2:
+            quantidade = valor / cotacao_ethereum;
+            usuario_atual->saldo_ethereum += quantidade;
+            break;
+        case 3:
+            quantidade = valor / cotacao_ripple;
+            usuario_atual->saldo_ripple += quantidade;
+            break;
+        default:
+            printf("Opção inválida.\n");
+            return;
+    }
+
+    usuario_atual->saldo_reais -= valor;
+    printf("Compra realizada com sucesso. Saldo em reais: R$ %.2f\n", usuario_atual->saldo_reais);
+}
+
+void vender_criptomoeda(Usuario *usuario_atual, float cotacao_bitcoin, float cotacao_ethereum, float cotacao_ripple) {
+    int opcao;
+    float quantidade, valor;
+
+    printf("Escolha a criptomoeda para vender:\n");
+    printf("1. Bitcoin (BTC)\n");
+    printf("2. Ethereum (ETH)\n");
+    printf("3. Ripple (XRP)\n");
+    printf("Opção: ");
+    scanf("%d", &opcao);
+
+    printf("Digite a quantidade que deseja vender: ");
+    scanf("%f", &quantidade);
+
+    switch (opcao) {
+        case 1:
+            if (quantidade > usuario_atual->saldo_bitcoin) {
+                printf("Saldo insuficiente em Bitcoin.\n");
+                return;
+            }
+            valor = quantidade * cotacao_bitcoin;
+            usuario_atual->saldo_bitcoin -= quantidade;
+            break;
+        case 2:
+            if (quantidade > usuario_atual->saldo_ethereum) {
+                printf("Saldo insuficiente em Ethereum.\n");
+                return;
+            }
+            valor = quantidade * cotacao_ethereum;
+            usuario_atual->saldo_ethereum -= quantidade;
+            break;
+        case 3:
+            if (quantidade > usuario_atual->saldo_ripple) {
+                printf("Saldo insuficiente em Ripple.\n");
+                return;
+            }
+            valor = quantidade * cotacao_ripple;
+            usuario_atual->saldo_ripple -= quantidade;
+            break;
+        default:
+            printf("Opção inválida.\n");
+            return;
+    }
+
+    usuario_atual->saldo_reais += valor;
+    printf("Venda realizada com sucesso. Você recebeu R$ %.2f. Saldo em reais: R$ %.2f\n", valor, usuario_atual->saldo_reais);
+}
+
+void exibir_menu() {
+    printf("\n----- Menu -----\n");
+    printf("1. Consultar saldo\n");
+    printf("2. Consultar extrato\n");
+    printf("3. Depositar reais\n");
+    printf("4. Sacar reais\n");
+    printf("5. Comprar criptomoeda\n");
+    printf("6. Vender criptomoeda\n");
+    printf("7. Atualizar cotações\n");
+    printf("8. Sair\n");
+    printf("----------------\n");
+}
+
+void consultar_extrato(Carteira *carteira) {
+    printf("\nExtrato de transações:\n");
+    for (int i = 0; i < carteira->num_transacoes; i++) {
+        Transacao t = carteira->transacoes[i];
+        printf("Operação: %s | Criptomoeda: %s | Valor: R$ %.2f | Taxa: R$ %.2f | Data: %s", 
+               t.tipo_operacao, t.criptomoeda, t.valor, t.taxa, ctime(&t.data));
+    }
+}
+
+int main() {
+    Usuario usuarios[MAX_USUARIOS];
+    Carteira carteiras[MAX_USUARIOS];
+    int num_usuarios = carregar_usuarios(usuarios);
+    Usuario usuario_atual;
+    Carteira *carteira_atual = NULL;
+
+    float cotacao_bitcoin = 120000.0;  // Exemplo de cotação inicial
+    float cotacao_ethereum = 9000.0;
+    float cotacao_ripple = 5.0;
+
+    int opcao;
+
+    srand(time(NULL)); // Para gerar variações aleatórias nas cotações
+
+    while (1) {
+        printf("\nBem-vindo ao sistema de investimentos!\n");
+        printf("1. Cadastrar novo usuário\n");
+        printf("2. Login\n");
+        printf("3. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                cadastrar_usuario(usuarios, &num_usuarios);
+                salvar_usuarios(usuarios, num_usuarios);
+                break;
+            case 2:
+                if (login(usuarios, num_usuarios, &usuario_atual)) {
+                    printf("Login realizado com sucesso!\n");
+                    carteira_atual = &carteiras[num_usuarios - 1];  // Associação de carteira ao usuário logado
+                    while (1) {
+                        exibir_menu();
+                        printf("Escolha uma opção: ");
+                        scanf("%d", &opcao);
+
+                        switch (opcao) {
+                            case 1:
+                                consultar_saldo(&usuario_atual);
+                                break;
+                            case 2:
+                                consultar_extrato(carteira_atual);
+                                break;
+                            case 3:
+                                depositar_reais(&usuario_atual);
+                                break;
+                            case 4:
+                                sacar_reais(&usuario_atual);
+                                break;
+                            case 5:
+                                comprar_criptomoeda(&usuario_atual, cotacao_bitcoin, cotacao_ethereum, cotacao_ripple);
+                                break;
+                            case 6:
+                                vender_criptomoeda(&usuario_atual, cotacao_bitcoin, cotacao_ethereum, cotacao_ripple);
+                                break;
+                            case 7:
+                                atualizar_cotacao(&cotacao_bitcoin, &cotacao_ethereum, &cotacao_ripple);
+                                break;
+                            case 8:
+                                printf("Saindo...\n");
+                                salvar_usuarios(usuarios, num_usuarios);  // Salva os dados antes de sair
+                                return 0;
+                            default:
+                                printf("Opção inválida. Tente novamente.\n");
+                        }
+                    }
+                } else {
+                    printf("Login falhou. CPF ou senha incorretos.\n");
+                }
+                break;
+            case 3:
+                printf("Encerrando o sistema...\n");
+                return 0;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+        }
+    }
+}
