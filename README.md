@@ -1,2 +1,2 @@
-# Exchange-de-Cripto
-Projeto 1: O projeto consiste na criação da sua propria Exchange de Criptomoedas, uma plataforma onde é possível comprar e vender criptomoedas​.
+# Login, Salvar e carregar
+Nessa parte, o codigo teve um foco em salvar as informaçoes de cadastro e Login, salvando as informações da conta.
