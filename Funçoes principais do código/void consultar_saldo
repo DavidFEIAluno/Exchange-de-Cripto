@@ -1,7 +1,0 @@
-void consultar_saldo(Usuario *usuario_atual) {
-    printf("\nSaldo Atual:\n");
-    printf("Reais: R$ %.2f\n", usuario_atual->saldo_reais);
-    printf("Bitcoin: %.6f BTC\n", usuario_atual->saldo_bitcoin);
-    printf("Ethereum: %.6f ETH\n", usuario_atual->saldo_ethereum);
-    printf("Ripple: %.6f XRP\n", usuario_atual->saldo_ripple);
-}

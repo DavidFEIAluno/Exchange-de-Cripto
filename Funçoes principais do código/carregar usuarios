@@ -1,9 +1,0 @@
-int carregar_usuarios(Usuario usuarios[]) {
-    FILE *file = fopen("usuarios.bin", "rb");
-    if (!file) {
-        return 0;
-    }
-    int num_usuarios = fread(usuarios, sizeof(Usuario), MAX_USUARIOS, file);
-    fclose(file);
-    return num_usuarios;
-}
