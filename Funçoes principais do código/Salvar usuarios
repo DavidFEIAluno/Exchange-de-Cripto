@@ -1,0 +1,9 @@
+void salvar_usuarios(Usuario usuarios[], int num_usuarios) {
+    FILE *file = fopen("usuarios.bin", "wb");
+    if (!file) {
+        printf("Erro ao abrir o arquivo para salvar os usuários.\n");
+        return;
+    }
+    fwrite(usuarios, sizeof(Usuario), num_usuarios, file);
+    fclose(file);
+}
