@@ -11,12 +11,12 @@ No Linux/macOS: ./programa_exchange_finalizado
 No Windows: programa_exchange_finalizado.exe
 
 # Funções e explicações do código:
-# Cadastro e Login
+Cadastro e Login
 Cadastrar usuário: O código permite o cadastro de novos usuários. O CPF e a senha são validados para garantir que estejam no formato correto (No caso respectivamente XXX.XXX.XXX-XX e senha de 6 digitos). Após o cadastro, os dados do usuário são armazenados.
 Login: Após o cadastro, o usuário pode realizar o login, onde o CPF e senha são comparados com os dados armazenados. O sistema carrega os usuários de um arquivo binário para verificar as credenciais.
 Salvar e carregar usuários: Os dados dos usuários (CPF, saldo, criptomoedas) são salvos em um arquivo binário e carregados quando o programa é iniciado, permitindo que as informações persistam entre sessões.
 
-# Operações financeiras
+Operações financeiras
 Consultar saldo: O usuário pode visualizar seu saldo em reais e o saldo em criptomoedas (Bitcoin, Ethereum e Ripple).
 Depositar reais: Permite ao usuário adicionar saldo em reais à sua conta.
 Sacar reais: O usuário pode sacar uma quantia em reais de seu saldo, desde que tenha fundos suficientes (Exemplo, se foi depositado 10 Reais, será impossivel de sacar 11 Reais).
@@ -25,7 +25,7 @@ Vender criptomoedas: O usuário pode vender suas criptomoedas, convertendo-as de
 Atualizar cotações: As cotações das criptomoedas são ajustadas em um intervalo de -5% a +5% da cotação anterior.
 Consultar extrato: O sistema mantém um registro das transações realizadas (como depósitos, saques, compras e vendas de criptomoedas) e permite que o usuário visualize esse histórico.
 
-# Menu Principal
+Menu Principal
 Apos o Login ser efetuado, o sistema mostra um Menu com as principais 8 opções ditas anteriormente.
 O código lida com três criptomoedas (Bitcoin, Ethereum, Ripple), e suas cotações são ajustadas aleatoriamente em intervalos pré-definidos. O usuário pode realizar transações baseadas nessas cotações.
 
