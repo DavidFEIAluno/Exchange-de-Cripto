@@ -1,0 +1,40 @@
+void comprar_criptomoeda(Usuario *usuario_atual, float cotacao_bitcoin, float cotacao_ethereum, float cotacao_ripple) {
+    int opcao;
+    float valor, quantidade;
+
+    printf("Escolha a criptomoeda para comprar:\n");
+    printf("1. Bitcoin (BTC)\n");
+    printf("2. Ethereum (ETH)\n");
+    printf("3. Ripple (XRP)\n");
+    printf("Opção: ");
+    scanf("%d", &opcao);
+
+    printf("Digite o valor em reais para investir: ");
+    scanf("%f", &valor);
+
+    if (valor > usuario_atual->saldo_reais) {
+        printf("Saldo insuficiente em reais.\n");
+        return;
+    }
+
+    switch (opcao) {
+        case 1:
+            quantidade = valor / cotacao_bitcoin;
+            usuario_atual->saldo_bitcoin += quantidade;
+            break;
+        case 2:
+            quantidade = valor / cotacao_ethereum;
+            usuario_atual->saldo_ethereum += quantidade;
+            break;
+        case 3:
+            quantidade = valor / cotacao_ripple;
+            usuario_atual->saldo_ripple += quantidade;
+            break;
+        default:
+            printf("Opção inválida.\n");
+            return;
+    }
+
+    usuario_atual->saldo_reais -= valor;
+    printf("Compra realizada com sucesso. Saldo em reais: R$ %.2f\n", usuario_atual->saldo_reais);
+}
