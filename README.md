@@ -30,4 +30,5 @@ Apos o Login ser efetuado, o sistema mostra um Menu com as principais 8 opções
 O código lida com três criptomoedas (Bitcoin, Ethereum, Ripple), e suas cotações são ajustadas aleatoriamente em intervalos pré-definidos. O usuário pode realizar transações baseadas nessas cotações.
 
 Feito Por: David Ivaldi Elhain
+
 Link para o acesso: https://github.com/DavidFEIAluno/Exchange-de-Cripto
