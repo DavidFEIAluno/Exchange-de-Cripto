@@ -1,0 +1,10 @@
+void consultar_extrato() {
+    char cpf[15];
+    printf("Digite o CPF do investidor: ");
+    scanf("%s", cpf);
+
+    // Aqui você pode implementar a lógica para exibir o extrato do investidor
+    // Para simplificação, vamos apenas exibir uma mensagem
+    printf("Extrato do investidor %s:\n", cpf);
+    // Exibir transações ou informações relevantes
+}

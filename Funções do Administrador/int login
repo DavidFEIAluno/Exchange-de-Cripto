@@ -1,0 +1,11 @@
+int login() {
+    char cpf[15], senha[11];
+    printf("Digite o CPF (formato xxx.xxx.xxx-xx): ");
+    scanf("%s", cpf);
+    printf("Digite a senha: ");
+    scanf("%s", senha);
+
+    // Aqui você pode implementar a lógica de verificação de login
+    // Para simplificação, vamos assumir que o login é sempre bem-sucedido
+    return 1; // Retorna 1 se o login for bem-sucedido
+}

@@ -1,0 +1,19 @@
+void cadastrar_criptomoeda() {
+    if (num_criptomoedas >= MAX_CRIPTOMOEDAS) {
+        printf("Limite de criptomoedas alcançado.\n");
+        return;
+    }
+
+    Criptomoeda nova_criptomoeda;
+    printf("Digite o nome da criptomoeda: ");
+    scanf(" %[^\n]", nova_criptomoeda.nome);
+    printf("Digite a cotação inicial: ");
+    scanf("%f", &nova_criptomoeda.cotacao);
+    printf("Digite a taxa de compra: ");
+    scanf("%f", &nova_criptomoeda.taxa_compra);
+    printf ("Digite a taxa de venda: ");
+    scanf("%f", &nova_criptomoeda.taxa_venda);
+
+    criptomoedas[num_criptomoedas++] = nova_criptomoeda;
+    printf("Criptomoeda cadastrada com sucesso.\n");
+}

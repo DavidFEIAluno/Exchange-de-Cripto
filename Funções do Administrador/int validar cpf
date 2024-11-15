@@ -1,0 +1,11 @@
+int validar_cpf(const char *cpf) {
+    // Validação simples do CPF (apenas formato)
+    if (strlen(cpf) != 14 || cpf[3] != '.' || cpf[7] != '.' || cpf[11] != '-') {
+        return 0;
+    }
+    for (int i = 0; i < 14; i++) {
+        if (i == 3 || i == 7 || i == 11) continue;
+        if (!isdigit(cpf[i])) return 0;
+    }
+    return 1;
+}
