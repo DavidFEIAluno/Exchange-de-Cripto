@@ -1,0 +1,28 @@
+void menu_principal() {
+    int opcao;
+    do {
+        printf("\nMenu Principal:\n");
+        printf("1. Cadastrar Investidor\n");
+        printf("2. Excluir Investidor\n");
+        printf("3. Cadastrar Criptomoeda\n");
+        printf("4. Excluir Criptomoeda\n");
+        printf("5. Consultar Saldo\n");
+        printf("6. Consultar Extrato\n");
+        printf("7. Atualizar Cotação\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1: cadastrar_investidor(); break;
+            case 2: excluir_investidor(); break;
+            case 3: cadastrar_criptomoeda(); break;
+            case 4: excluir_criptomoeda(); break;
+            case 5: consultar_saldo(); break;
+            case 6: consultar_extrato(); break;
+            case 7: atualizar_cotacao(); break;
+            case 0: printf("Saindo...\n"); break;
+            default: printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (opcao != 0);
+}

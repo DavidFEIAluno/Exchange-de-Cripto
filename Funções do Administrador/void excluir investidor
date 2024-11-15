@@ -1,0 +1,25 @@
+void excluir_investidor() {
+    char cpf[15];
+    printf("Digite o CPF do investidor a ser excluído: ");
+    scanf("%s", cpf);
+
+    for (int i = 0; i < num_investidores; i++) {
+        if (strcmp(investidores[i].cpf, cpf) == 0) {
+            printf("Dados do investidor encontrado:\n");
+            printf("Nome: %s, CPF: %s, Saldo: R$ %.2f\n", investidores[i].nome, investidores[i].cpf, investidores[i].saldo_reais);
+            char confirmacao;
+            printf("Deseja excluir este investidor? (s/n): ");
+            scanf(" %c", &confirmacao);
+            if (confirmacao == 's' || confirmacao == 'S') {
+                // Move todos os investidores para a esquerda
+                for (int j = i; j < num_investidores - 1; j++) {
+                    investidores[j] = investidores[j + 1];
+                }
+                num_investidores--;
+                printf("Investidor excluído com sucesso.\n");
+            }
+            return;
+        }
+    }
+    printf("Investidor não encontrado.\n");
+}

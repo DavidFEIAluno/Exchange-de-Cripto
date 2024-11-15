@@ -1,0 +1,13 @@
+void consultar_saldo() {
+    char cpf[15];
+    printf("Digite o CPF do investidor: ");
+    scanf("%s", cpf);
+
+    for (int i = 0; i < num_investidores; i++) {
+        if (strcmp(investidores[i].cpf, cpf) == 0) {
+            printf("Saldo do investidor %s: R$ %.2f\n", investidores[i].nome, investidores[i].saldo_reais);
+            return;
+        }
+    }
+    printf("Investidor não encontrado.\n");
+}

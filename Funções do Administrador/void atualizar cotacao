@@ -1,0 +1,16 @@
+void atualizar_cotacao() {
+    char nome[50];
+    printf("Digite o nome da criptomoeda para atualizar a cotação: ");
+    scanf(" %[^\n]", nome);
+
+    for (int i = 0; i < num_criptomoedas; i++) {
+        if (strcmp(criptomoedas[i].nome, nome) == 0) {
+            printf("Cotação atual: R$ %.2f\n", criptomoedas[i].cotacao);
+            printf("Digite a nova cotação: ");
+            scanf("%f", &criptomoedas[i].cotacao);
+            printf("Cotação atualizada com sucesso.\n");
+            return;
+        }
+    }
+    printf("Criptomoeda não encontrada.\n");
+}

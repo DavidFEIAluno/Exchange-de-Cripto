@@ -1,0 +1,22 @@
+void cadastrar_investidor() {
+    if (num_investidores >= MAX_USUARIOS) {
+        printf("Limite de investidores alcançado.\n");
+        return;
+    }
+
+    Investidor novo_investidor;
+    printf("Digite o nome do investidor: ");
+    scanf(" %[^\n]", novo_investidor.nome);
+
+    do {
+        printf("Digite o CPF (formato xxx.xxx.xxx-xx): ");
+        scanf("%s", novo_investidor.cpf);
+    } while (!validar_cpf(novo_investidor.cpf));
+
+    printf("Digite a senha: ");
+    scanf("%s", novo_investidor.senha);
+    novo_investidor.saldo_reais = 0.0;
+
+    investidores[num_investidores++] = novo_investidor;
+    printf("Investidor cadastrado com sucesso.\n");
+}
