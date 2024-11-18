@@ -5,12 +5,21 @@
 
 #define MAX_USUARIOS 100
 #define MAX_CRIPTOMOEDAS 10
+#define MAX_TRANSACOES 100
+
+typedef struct {
+    char tipo[20]; // Tipo de transação (depósito, saque, compra, venda)
+    float valor;
+    char data[20]; // Data da transação
+} Transacao;
 
 typedef struct {
     char nome[50];
     char cpf[15];
     char senha[11];
     float saldo_reais;
+    Transacao transacoes[MAX_TRANSACOES];
+    int num_transacoes;
 } Investidor;
 
 typedef struct {
@@ -26,8 +35,6 @@ int num_investidores = 0;
 int num_criptomoedas = 0;
 
 // Prototipagem das funções
-int carregar_investidores(Investidor investidores[]);
-int carregar_criptomoedas(Criptomoeda criptomoedas[]);
 int validar_cpf(const char *cpf);
 int login();
 void cadastrar_investidor(Investidor investidores[], int *num_investidores);
@@ -81,13 +88,14 @@ void cadastrar_investidor(Investidor investidores[], int *num_investidores) {
     printf("Digite a senha: ");
     scanf("%s", novo_investidor.senha);
     novo_investidor.saldo_reais = 0.0;
+    novo_investidor.num_transacoes = 0; // Inicializa o número de transações
 
     investidores[*num_investidores] = novo_investidor;
     (*num_investidores)++;
 
     // Salvar no arquivo
     FILE *file = fopen("investidores.bin", "ab");
-    if (file) {
+    if (file ) {
         fwrite(&novo_investidor, sizeof(Investidor), 1, file);
         fclose(file);
         printf("Investidor cadastrado com sucesso.\n");
@@ -96,7 +104,7 @@ void cadastrar_investidor(Investidor investidores[], int *num_investidores) {
     }
 }
 
-void excluir_investidor( Investidor investidores[], int *num_investidores) {
+void excluir_investidor(Investidor investidores[], int *num_investidores) {
     char cpf[15];
     printf("Digite o CPF do investidor a ser excluído: ");
     scanf("%s", cpf);
@@ -182,6 +190,16 @@ void excluir_criptomoeda(Criptomoeda criptomoedas[], int *num_criptomoedas) {
     printf("Criptomoeda não encontrada.\n");
 }
 
+void registrar_transacao(Investidor *investidor, const char *tipo, float valor) {
+    if (investidor->num_transacoes < MAX_TRANSACOES) {
+        Transacao *transacao = &investidor->transacoes[investidor->num_transacoes++];
+        strcpy(transacao->tipo, tipo);
+        transacao->valor = valor;
+        // Aqui você pode adicionar a lógica para definir a data da transação
+        strcpy(transacao->data, "01/01/2023"); // Exemplo fixo, você pode usar a data atual
+    }
+}
+
 void consultar_saldo() {
     char cpf[15];
     printf("Digite o CPF do investidor: ");
@@ -201,10 +219,16 @@ void consultar_extrato() {
     printf("Digite o CPF do investidor: ");
     scanf("%s", cpf);
 
-    // Aqui você pode implementar a lógica para exibir o extrato do investidor
-    // Para simplificação, vamos apenas exibir uma mensagem
-    printf("Extrato do investidor %s:\n", cpf);
-    // Exibir transações ou informações relevantes
+    for (int i = 0; i < num_investidores; i++) {
+        if (strcmp(investidores[i].cpf, cpf) == 0) {
+            printf("Extrato do investidor %s:\n", investidores[i].nome);
+            for (int j = 0; j < investidores[i].num_transacoes; j++) {
+                printf("Tipo: %s, Valor: R$ %.2f, Data: %s\n", investidores[i].transacoes[j].tipo, investidores[i].transacoes[j].valor, investidores[i].transacoes[j].data);
+            }
+            return;
+        }
+    }
+    printf("Investidor não encontrado.\n");
 }
 
 void atualizar_cotacao() {
