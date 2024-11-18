@@ -29,6 +29,41 @@ Menu Principal
 Apos o Login ser efetuado, o sistema mostra um Menu com as principais 8 opções ditas anteriormente.
 O código lida com três criptomoedas (Bitcoin, Ethereum, Ripple), e suas cotações são ajustadas aleatoriamente em intervalos pré-definidos. O usuário pode realizar transações baseadas nessas cotações.
 
+# Projeto 3
+
+Objetivo do Programa:
+O programa implementa um sistema de gerenciamento para investidores e transações financeiras envolvendo criptomoedas. Ele permite funcionalidades como:
+Cadastro e exclusão de investidores e criptomoedas.
+Consulta de saldo e extrato de transações.
+Atualização de cotações de criptomoedas.
+Registro de transações financeiras.
+
+Forma de Compilação e Execução:
+Compilação: Use um compilador de C, como gcc. Execute o seguinte comando no terminal para compilar o programa:
+"gcc programa.c -o programa"
+Substitua programa.c pelo nome do arquivo.
+
+Execução: Após a compilação, execute o programa gerado:
+./programa
+
+Forma de Uso do Programa:
+Ao iniciar, o programa solicita o login do usuário, pedindo o CPF e a senha. Se o login for bem-sucedido, o menu principal é exibido, apresentando opções como:
+
+Cadastrar e excluir investidores.
+Adicionar ou remover criptomoedas.
+Consultar saldo e extrato de um investidor.
+Atualizar as cotações das criptomoedas.
+O usuário seleciona uma opção digitando o número correspondente e segue as instruções.
+O programa salva os dados de investidores e criptomoedas em arquivos binários para persistência.
+Validação de CPF: Assegura que o CPF inserido siga o formato xxx.xxx.xxx-xx.
+Persistência de Dados: Os dados de investidores e criptomoedas são salvos em arquivos binários, garantindo que sejam preservados entre as execuções.
+
+Funcionalidades Gerais:
+Investidores: É possível cadastrar, consultar saldo/extrato, e excluir investidores.
+Criptomoedas: O sistema permite cadastrar novas criptomoedas, excluir existentes e atualizar suas cotações.
+Transações: Todas as operações financeiras são registradas com detalhes como tipo, valor e data.
+Interface Simples: A interação é baseada em menus numéricos, tornando o programa intuitivo.
+
 Feito Por: David Ivaldi Elhain
 RA: 24.124.009-2
 Link para o acesso: https://github.com/DavidFEIAluno/Exchange-de-Cripto
